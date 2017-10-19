@@ -1,7 +1,4 @@
-[all:vars]
-GUID=9568
-
-[internal:vars]
+[GenericExample:vars]
 
 ###########################################################################
 ### Ansible Vars
@@ -10,23 +7,52 @@ timeout=60
 ansible_become=yes
 ansible_ssh_user=ec2-user
 
-[internal:children]
+
+[GenericExample:children]
+towers
 frontends
 apps
 appdbs
+windows
+support
 
-## These are the frontends - haproxy
+
+
+[towers]
+## These are the towers
+tower1.dd28.internal public_host_name=tower1.dd28.example.opentlc.com ssh_host=ec2-34-237-39-153.compute-1.amazonaws.com
+tower2.dd28.internal public_host_name=tower2.dd28.example.opentlc.com ssh_host=ec2-54-157-73-126.compute-1.amazonaws.com
+tower3.dd28.internal public_host_name=tower3.dd28.example.opentlc.com ssh_host=ec2-34-227-234-134.compute-1.amazonaws.com
+
 [frontends]
-frontend1 ansible_host=frontend1."{{ GUID }}".internal
+## These are the frontends
+frontend1.dd28.internal ssh_host=ec2-34-237-51-133.compute-1.amazonaws.com
 
-## These are the apps - tomcat
 [apps]
-app1 ansible_host=app1."{{ GUID }}".internal
-app2 ansible_host=app2."{{ GUID }}".internal
+## These are the apps
+app1.dd28.internal ssh_host=ec2-34-236-33-228.compute-1.amazonaws.com
+app2.dd28.internal ssh_host=ec2-34-236-38-105.compute-1.amazonaws.com
 
-## These are the appdbi(s) - postgres
 [appdbs]
-appdb1 ansible_host=appdb1."{{ GUID }}".internal
+## These are the appdbs
+appdb1.dd28.internal ssh_host=ec2-34-237-75-135.compute-1.amazonaws.com
 
-[external]
-#web ansible_host=frontend."{{ GUID }}".example.opentlc.com
+[windows]
+## These are the windows servers
+windows1.dd28.internal ssh_host=ec2-34-205-221-110.compute-1.amazonaws.com ansible_password=jVMijRwLbI02gFCo2xkjlZ9lxEA7bm7zgg==
+
+
+## These are the supporthosts
+[support]
+support1.dd28.internal ssh_hose=ec2-34-204-181-24.compute-1.amazonaws.com
+support2.dd28.internal ssh_hose=ec2-34-236-170-9.compute-1.amazonaws.com
+
+[windows:vars]
+ansible_connection=winrm
+ansible_port=5986
+ansible_ssh_port=5986
+ansible_user=Administrator
+ansible_ssh_user=Administrator
+ansible_winrm_server_cert_validation=ignore
+ansible_winrm_transport=basic
+ansible_become=false
