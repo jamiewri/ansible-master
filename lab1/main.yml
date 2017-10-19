@@ -2,9 +2,6 @@
 # Setup front-end load balancer tier
 
 
-- name: setup inventory
-  hosts: jumphost
-
 - name: setup load-balancer tier
   hosts: "{{ frontend_group }}"
   roles:
