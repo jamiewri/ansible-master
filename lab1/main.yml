@@ -4,8 +4,6 @@
 
 - name: setup inventory
   hosts: jumphost
-  roles:
-    - {name: osp-facts, tags: inventory-config}
 
 - name: setup load-balancer tier
   hosts: {{ frontend_group }}
