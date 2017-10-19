@@ -6,7 +6,7 @@
   hosts: jumphost
 
 - name: setup load-balancer tier
-  hosts: {{ frontend_group }}
+  hosts: "{{ frontend_group }}"
   roles:
     - {name: base-config, tags: base-config}
     - {name: lb-tier, tags: [lbs, haproxy]}
@@ -15,7 +15,7 @@
 # Setup application servers tier
 
 - name: setup app tier
-  hosts: {{ app_group }}
+  hosts: "{{ app_group }}"
   gather_facts: false
   roles:
     - {name: base-config, tags: base-config}
@@ -24,7 +24,7 @@
 # Setup database tier
 
 - name: setup database tier
-  hosts: {{ db_group }}
+  hosts: "{{ db_group }}"
   roles:
     - {name: base-config, tags: base-config}
     - {name: geerlingguy.postgresql, tags: [dbs, postgres]}
