@@ -3,7 +3,7 @@
 
 
 - name: setup inventory
-  hosts: bastion
+  hosts: jumphost
   roles:
     - {name: osp-facts, tags: inventory-config}
 
