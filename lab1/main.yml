@@ -3,12 +3,12 @@
 
 
 - name: setup inventory
-  hosts: jumpbox
+  hosts: bastion
   roles:
     - {name: osp-facts, tags: inventory-config}
 
 - name: setup load-balancer tier
-  hosts: frontends
+  hosts: {{ frontend_group }}
   roles:
     - {name: base-config, tags: base-config}
     - {name: lb-tier, tags: [lbs, haproxy]}
@@ -17,7 +17,7 @@
 # Setup application servers tier
 
 - name: setup app tier
-  hosts: apps
+  hosts: {{ app_group }}
   gather_facts: false
   roles:
     - {name: base-config, tags: base-config}
@@ -26,14 +26,14 @@
 # Setup database tier
 
 - name: setup database tier
-  hosts: appdbs
+  hosts: {{ db_group }}
   roles:
     - {name: base-config, tags: base-config}
     - {name: geerlingguy.postgresql, tags: [dbs, postgres]}
 
 # Check haproxy and tomcat working
 
-- name: setup database tier
-  hosts: external
-  roles:
-    - {name: checks, tags: checks}
+#- name: setup database tier
+#  hosts: external
+#  roles:
+#    - {name: checks, tags: checks}
